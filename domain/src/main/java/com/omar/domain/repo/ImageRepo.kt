@@ -4,6 +4,6 @@ import com.omar.domain.model.CategoryResponse
 
 interface ImageRepo {
     //RestApi
-    fun getImageFromRemote(): CategoryResponse
+   suspend fun getImageFromRemote(): CategoryResponse
 
 }

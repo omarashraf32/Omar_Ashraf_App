@@ -5,56 +5,106 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.omar.domain.model.CategoryResponseItem
+import com.omar.omarashraf.ImageListViewModel
 import com.omar.omarashraf.R
+import com.omar.omarashraf.databinding.FragmentImagesListBinding
+import com.omar.omarashraf.di.states.GetImagesError
+import com.omar.omarashraf.di.states.GetImagesLoading
+import com.omar.omarashraf.di.states.GetImagesSuccess
+import com.omar.omarashraf.di.states.InitState
+import com.omar.omarashraf.imagesList.adapter.ImageAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class ImagesListFragment : Fragment(), ImageAdapter.OnItemClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ImagesListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ImagesListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentImagesListBinding
+    private val imageAdapter = ImageAdapter(this)
+    private lateinit var viewModel: ImageListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_images_list, container, false)
+        binding = FragmentImagesListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ImagesListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ImagesListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViewModel()
+        setupRecyclerView()
+        setupLiveDataObservers()
+        fetchData()
+
+    }
+
+    private fun fetchData() = viewModel.getImages()
+
+    private fun setupLiveDataObservers() {
+        lifecycleScope.launch {
+            viewModel.categories.collect { state ->
+                when (state) {
+                    is GetImagesLoading -> showLoading()
+                    is GetImagesSuccess -> onGetImagesSuccess(state.images)
+                    is GetImagesError -> onGetImagesError()
+                    is InitState -> onGetImagesInitState()
+                    else -> {}
                 }
             }
+        }
+    }
+
+    private fun onGetImagesInitState() {}
+
+    private fun onGetImagesError() {
+        hideLoading()
+        view?.let { view ->
+            Snackbar.make(view, R.string.something_went_wrong, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry) { viewModel.getUpdateImages() }.show()
+        }
+    }
+
+    private fun onGetImagesSuccess(images: List<CategoryResponseItem>) {
+        hideLoading()
+        imageAdapter.submitList(images)
+    }
+
+    private fun hideLoading() {
+
+    }
+
+    private fun showLoading() {
+
+    }
+
+    private fun setupRecyclerView() {
+        binding.imagesRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = imageAdapter
+        }
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[ImageListViewModel::class.java]
+    }
+
+    override fun onItemClickListener(category: CategoryResponseItem) {
+        findNavController().navigate(
+            ImagesListFragmentDirections.actionImagesListFragmentToDownloadImagesFragment(
+                Gson().toJson(
+                    category
+                )
+            )
+        )
     }
 }

@@ -18,8 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ImageViewModel
-@Inject constructor(
+class ImageListViewModel @Inject constructor(
     private val getUpdateImages: GetUpdateImagesUseCase,
     private val getCachedImages: GetCachedImageUseCase
 ) : ViewModel() {

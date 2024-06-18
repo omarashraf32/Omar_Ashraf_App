@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 interface ApiService {
     @GET("list")
-    fun getImage(): CategoryResponse
+   suspend fun getImage(): CategoryResponse
 }

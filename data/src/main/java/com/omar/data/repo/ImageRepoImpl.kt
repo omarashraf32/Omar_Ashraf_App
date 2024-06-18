@@ -5,5 +5,5 @@ import com.omar.domain.model.CategoryResponse
 import com.omar.domain.repo.ImageRepo
 
 class ImageRepoImpl(private val apiService: ApiService): ImageRepo {
-    override fun getImageFromRemote(): CategoryResponse = apiService.getImage()
+    override suspend fun getImageFromRemote(): CategoryResponse = apiService.getImage()
 }

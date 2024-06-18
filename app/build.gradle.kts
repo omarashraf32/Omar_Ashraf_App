@@ -1,13 +1,14 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
 }
 
 android {
     namespace = "com.omar.omarashraf"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.omar.omarashraf"
@@ -34,6 +35,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -66,9 +70,19 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
+    //coil
+    implementation("io.coil-kt:coil:2.6.0")
+
+    //navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
 
     implementation(project(":domain"))
     implementation(project(":data"))
+
+
+
 }
 kapt {
     correctErrorTypes = true
