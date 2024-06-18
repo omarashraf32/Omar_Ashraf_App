@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.omar.domain.model.CategoryResponseItem
-import com.omar.omarashraf.ImageListViewModel
 import com.omar.omarashraf.R
 import com.omar.omarashraf.databinding.FragmentImagesListBinding
 import com.omar.omarashraf.di.states.GetImagesError
