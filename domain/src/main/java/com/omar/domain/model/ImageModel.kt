@@ -3,7 +3,7 @@ package com.omar.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CategoryResponseItem(
+data class ImageModel(
     @SerializedName("author")
     val author: String? = null,
     @SerializedName("download_url")

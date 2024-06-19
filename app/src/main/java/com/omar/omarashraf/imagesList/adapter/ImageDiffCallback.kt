@@ -1,19 +1,19 @@
 package com.omar.omarashraf.imagesList.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.omar.domain.model.CategoryResponseItem
+import com.omar.domain.model.ImageModel
 
-internal class ImageDiffCallback : DiffUtil.ItemCallback<CategoryResponseItem>() {
+internal class ImageDiffCallback : DiffUtil.ItemCallback<ImageModel>() {
     override fun areItemsTheSame(
-        oldItem: CategoryResponseItem,
-        newItem: CategoryResponseItem
+        oldItem: ImageModel,
+        newItem: ImageModel
     ): Boolean {
         return oldItem == newItem
     }
 
     override fun areContentsTheSame(
-        oldItem: CategoryResponseItem,
-        newItem: CategoryResponseItem
+        oldItem: ImageModel,
+        newItem: ImageModel
     ): Boolean {
         return oldItem == newItem
     }

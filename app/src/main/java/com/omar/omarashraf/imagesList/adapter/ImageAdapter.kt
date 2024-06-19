@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.omar.domain.model.CategoryResponseItem
+import com.omar.domain.model.ImageModel
 import com.omar.omarashraf.databinding.ItemImagesBinding
 
 class ImageAdapter(private val onItemClicked: OnItemClickListener) :
-    ListAdapter<CategoryResponseItem, ImageAdapter.ViewHolder>(ImageDiffCallback()) {
+    ListAdapter<ImageModel, ImageAdapter.ViewHolder>(ImageDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemBinding =
@@ -24,7 +24,7 @@ class ImageAdapter(private val onItemClicked: OnItemClickListener) :
     inner class ViewHolder
         (private val itemBinding: ItemImagesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(category: CategoryResponseItem) {
+        fun bind(category: ImageModel) {
             category.apply {
                 itemBinding.apply {
                     imgImage.load(downloadUrl)
@@ -40,7 +40,7 @@ class ImageAdapter(private val onItemClicked: OnItemClickListener) :
     }
 
     interface OnItemClickListener {
-        fun onItemClickListener(category: CategoryResponseItem)
+        fun onItemClickListener(category: ImageModel)
     }
 
 }

@@ -9,7 +9,7 @@
         android:id="@+id/imagesListFragment"
         android:name="com.omar.omarashraf.imagesList.ImagesListFragment"
         android:label="Fragment Images List"
-        tools:layout="@layout/fragment_images_list" >
+        tools:layout="@layout/fragment_images_list">
         <action
             android:id="@+id/action_imagesListFragment_to_downloadImagesFragment"
             app:destination="@id/downloadImagesFragment"
@@ -18,11 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloadImagesFragment"
-        android:name="com.omar.omarashraf.DownloadImagesFragment"
+        android:name="com.omar.omarashraf.downloadedImages.DownloadedImagesFragment"
         android:label="Fragment Download Images"
-        tools:layout="@layout/fragment_download_images" >
-        <argument
-            android:name="urlImage"
-            app:argType="string" />
-    </fragment>
+        tools:layout="@layout/fragment_downloaded_images" />
 </navigation>
