@@ -12,9 +12,7 @@
         tools:layout="@layout/fragment_images_list">
         <action
             android:id="@+id/action_imagesListFragment_to_downloadImagesFragment"
-            app:destination="@id/downloadImagesFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
+            app:destination="@id/downloadImagesFragment" />
     </fragment>
     <fragment
         android:id="@+id/downloadImagesFragment"

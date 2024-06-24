@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,6 +28,7 @@ class ImagesListFragment : Fragment(), ImageAdapter.OnItemClickListener {
     private lateinit var binding: FragmentImagesListBinding
     private val imageAdapter = ImageAdapter(this)
     private lateinit var viewModel: ImageListViewModel
+    private lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +44,30 @@ class ImagesListFragment : Fragment(), ImageAdapter.OnItemClickListener {
         setupRecyclerView()
         setupLiveDataObservers()
         fetchData()
+        initNavDrawer()
 
+    }
+
+    private fun initNavDrawer() {
+       toggle = ActionBarDrawerToggle(requireActivity(),binding.drawerLayout,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        navViewAction()
+
+
+    }
+
+    private fun navViewAction() {
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_download ->{
+                    findNavController().navigate(
+                        ImagesListFragmentDirections.actionImagesListFragmentToDownloadImagesFragment()
+                    )
+                }
+            }
+        }
     }
 
     private fun fetchData() = viewModel.addAction(ImagesListIntents.GetImages)

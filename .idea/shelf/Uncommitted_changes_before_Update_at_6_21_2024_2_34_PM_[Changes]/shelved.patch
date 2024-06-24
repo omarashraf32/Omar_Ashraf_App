@@ -1,0 +1,35 @@
+Index: app/src/main/java/com/omar/omarashraf/DownloadImagesFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.omar.omarashraf\r\n\r\nimport android.os.Bundle\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.Toast\r\nimport androidx.navigation.fragment.findNavController\r\nimport androidx.navigation.fragment.navArgs\r\nimport coil.load\r\nimport com.google.gson.Gson\r\nimport com.omar.domain.model.CategoryResponseItem\r\nimport com.omar.omarashraf.databinding.FragmentDownloadImagesBinding\r\nimport dagger.hilt.android.AndroidEntryPoint\r\n\r\n@AndroidEntryPoint\r\nclass DownloadImagesFragment : Fragment() {\r\n\r\n    private lateinit var binding: FragmentDownloadImagesBinding\r\n    private val args: DownloadImagesFragmentArgs by navArgs()\r\n\r\n    private val images: CategoryResponseItem? by lazy {\r\n        try {\r\n            Gson().fromJson(args.urlImage, CategoryResponseItem::class.java)\r\n        } catch (e: Exception) {\r\n            e.printStackTrace()\r\n            null\r\n        }\r\n    }\r\n    override fun onCreateView(\r\n        inflater: LayoutInflater, container: ViewGroup?,\r\n        savedInstanceState: Bundle?\r\n    ): View? {\r\n        // Inflate the layout for this fragment\r\n        binding = FragmentDownloadImagesBinding.inflate(inflater, container, false)\r\n        return binding.root\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n        if(images == null){//in case of images was null -> return\r\n            Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show()\r\n            findNavController().navigateUp()\r\n            return\r\n        }\r\n        setupViews()\r\n    }\r\n\r\n    private fun setupViews() {\r\n       binding.apply {\r\n           images.apply {\r\n               imgDownload.load(images)\r\n           }\r\n       }\r\n    }\r\n}
+===================================================================
+diff --git a/app/src/main/java/com/omar/omarashraf/DownloadImagesFragment.kt b/app/src/main/java/com/omar/omarashraf/DownloadImagesFragment.kt
+--- a/app/src/main/java/com/omar/omarashraf/DownloadImagesFragment.kt	
++++ b/app/src/main/java/com/omar/omarashraf/DownloadImagesFragment.kt	
+@@ -49,8 +49,8 @@
+ 
+     private fun setupViews() {
+        binding.apply {
+-           images.apply {
+-               imgDownload.load(images)
++           images?.apply {
++               imgDownload.load(downloadUrl)
+            }
+        }
+     }
+Index: app/src/main/res/layout/fragment_download_images.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    tools:context=\".DownloadImagesFragment\">\r\n\r\n    <ImageView\r\n        android:id=\"@+id/img_download\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"350dp\"\r\n        android:layout_margin=\"8dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"/>\r\n\r\n    <Button\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        android:layout_margin=\"8dp\"\r\n        android:text=\"@string/download\"\r\n        android:textSize=\"20sp\"\r\n        android:textStyle=\"bold\"/>\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_download_images.xml b/app/src/main/res/layout/fragment_download_images.xml
+--- a/app/src/main/res/layout/fragment_download_images.xml	
++++ b/app/src/main/res/layout/fragment_download_images.xml	
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<androidx.constraintlayout.widget.ConstraintLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
